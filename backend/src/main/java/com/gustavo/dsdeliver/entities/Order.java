@@ -28,11 +28,9 @@ public class Order implements Serializable {
 	private Instant moment;
 	private OrderStatus status;
 
-	//Mapeamento objeto-relacional
+	// Mapeamento objeto-relacional
 	@ManyToMany
-	@JoinTable(name = "tb_order_product",
-		joinColumns = @JoinColumn(name = "order_id"), 
-		inverseJoinColumns = @JoinColumn(name = "product_id"))
+	@JoinTable(name = "tb_order_product", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
 	private Set<Product> products = new HashSet<>();
 
 	public Order() {
@@ -98,6 +96,14 @@ public class Order implements Serializable {
 
 	public Set<Product> getProducts() {
 		return products;
+	}
+	
+	public Double getTotal() {
+		double sum = 0;
+		for (Product p : products) {
+			sum += p.getPrice();
+		}
+		return sum;
 	}
 
 	@Override
